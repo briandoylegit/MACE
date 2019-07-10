@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+      <meta name="mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="theme-color" content="#000000">
+      <meta name="description" content="Map based archaeoastronomy calculator and explorer.">
+      
+      <title>MACE</title>
+      <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+         integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+         crossorigin=""></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+      <link rel="icon" type="image/x-icon" href="assets/css/jquery-ui.css">
+      <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+      <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+      <link rel="stylesheet" href="assets/css/lobipanel.min.css"/>
+      <link rel="stylesheet" href="assets/css/Control.Coordinates.css" />
+      <link rel="stylesheet" href="assets/css/MarkerCluster.css">
+      <link rel="stylesheet" href="assets/css/MarkerCluster.Default.css">
+      <link rel="stylesheet" href="assets/css/L.Control.Locate.css">
+      <link rel="stylesheet" href="assets/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css">
+      <link rel="stylesheet" href="assets/css/app.css">
+      <link rel="stylesheet" href="assets/css/Leaflet.PolylineMeasure.css">
+      <link rel="stylesheet" href="assets/css/L.Control.Zoomslider.css">
+      <link rel="stylesheet" href="assets/css/leaflet.css">
+      <link rel="stylesheet" href="assets/css/L.Control.HtmlLegend.css" />
+      <link rel="stylesheet" href="assets/css/leaflet.fullscreen.css" />
+      <link rel="stylesheet" href="assets/css/scrollbar.css" />
+      <link rel="stylesheet" href="assets/css/leaflet.magnifyingglass.css" />
+      <link rel="stylesheet" href="assets/css/Control.MagnifyingGlass.css" />
+      <link rel="stylesheet" href="assets/css/L.Control.ZoomBox.css" />
+      <link rel="stylesheet" href="assets/css/Control.MiniMap.css" />
+      <link rel="stylesheet" href="assets/css/printsettings.css" />
+      <link rel="stylesheet" href="assets/css/leaflet-bootstrapmodal.css" />
+      <link rel="stylesheet" href="assets/css/leaflet-sidebar.css" />
+      <link rel="stylesheet" href="assets/css/jquery.treegrid.css" />
+      <link rel="stylesheet" href="assets/css/material-switch.css" />
+      <link rel="stylesheet" href="assets/css/titatoggle-dist.css" />
+      <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+      <link rel="mask-icon" href="assets/img/safari-pinned-tab.svg" color="#5bbad5">
+      <meta name="msapplication-TileColor" content="#da532c">
+      <meta name="theme-color" content="#ffffff">
+      <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+      <style>
+         .leaflet-container.crosshair-cursor-enabled {
+         cursor: crosshair;
+         }
+         .btn {
+         border-radius: 0px;
+         }
+         .navbar-default {
+         background-color: #1c2a48;
+         border-color: #2e3951;
+         }
+         .navbar-default .navbar-brand {
+         color: #fafafa;
+         }
+         .navbar-default .navbar-brand:hover,
+         .navbar-default .navbar-brand:focus {
+         color: #d0d6e2;
+         }
+         .navbar-default .navbar-text {
+         color: #fafafa;
+         }
+         .navbar-default .navbar-nav > li > a {
+         color: #fafafa;
+         }
+         .navbar-default .navbar-nav > li > a:hover,
+         .navbar-default .navbar-nav > li > a:focus {
+         color: #d0d6e2;
+         }
+         .navbar-default .navbar-nav > li > .dropdown-menu {
+         background-color: #1c2a48;
+         }
+         .navbar-default .navbar-nav > li > .dropdown-menu > li > a {
+         color: #fafafa;
+         }
+         .navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
+         .navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
+         color: #d0d6e2;
+         background-color: #2e3951;
+         }
+         .navbar-default .navbar-nav > li > .dropdown-menu > li.divider {
+         background-color: #2e3951;
+         }
+         .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+         .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+         .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+         color: #d0d6e2;
+         background-color: #2e3951;
+         }
+         .navbar-default .navbar-nav > .active > a,
+         .navbar-default .navbar-nav > .active > a:hover,
+         .navbar-default .navbar-nav > .active > a:focus {
+         color: #d0d6e2;
+         background-color: #2e3951;
+         }
+         .navbar-default .navbar-nav > .open > a,
+         .navbar-default .navbar-nav > .open > a:hover,
+         .navbar-default .navbar-nav > .open > a:focus {
+         color: #d0d6e2;
+         background-color: #2e3951;
+         }
+         .navbar-default .navbar-toggle {
+         border-color: #2e3951;
+         }
+         .navbar-default .navbar-toggle:hover,
+         .navbar-default .navbar-toggle:focus {
+         background-color: #2e3951;
+         }
+         .navbar-default .navbar-toggle .icon-bar {
+         background-color: #fafafa;
+         }
+         .navbar-default .navbar-collapse,
+         .navbar-default .navbar-form {
+         border-color: #fafafa;
+         }
+         .navbar-default .navbar-link {
+         color: #fafafa;
+         }
+         .navbar-default .navbar-link:hover {
+         color: #d0d6e2;
+         }
+         @media (max-width: 767px) {
+         .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+         color: #fafafa;
+         }
+         .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+         .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+         color: #d0d6e2;
+         }
+         .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+         .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+         .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+         color: #d0d6e2;
+         background-color: #2e3951;
+         }
+         
+         <!-- k52 buttons -->
+         .btn-circle.btn-xl {
+         width: 70px;
+         height: 70px;
+         padding: 10px 16px;
+         border-radius: 35px;
+         font-size: 24px;
+         line-height: 1.33;
+         }
+         .btn-circle.btn-xs {
+         width: 20px;
+         height: 20px;
+         padding: 2px 0px;
+         border-radius: 10px;
+         font-size: 12px;
+         line-height: .3;
+         text-decoration : none;
+         color:white;
+         }
+         .btn-circle {
+         width: 30px;
+         height: 30px;
+         padding: 6px 0px;
+         border-radius: 15px;
+         text-align: center;
+         font-size: 12px;
+         line-height: 1.42857;
+         }
+         .btn:focus,.btn:active {
+         outline: none !important;
+         box-shadow: none;
+         }
+         .btn-k52blue { 
+         color: #ffffff; 
+         background-color: #1C2A48; 
+         border-color: #130269; 
+         } 
+         .btn-k52blue:hover, 
+         .btn-k52blue:focus, 
+         .btn-k52blue:active, 
+         .btn-k52blue.active, 
+         .open .dropdown-toggle.btn-k52blue { 
+         color: #ffffff; 
+         background-color: #0074D9; 
+         border-color: #130269; 
+         } 
+         .btn-k52blue:active, 
+         .btn-k52blue.active, 
+         .open .dropdown-toggle.btn-k52blue { 
+         background-image: none; 
+         } 
+         .btn-k52blue.disabled, 
+         .btn-k52blue[disabled], 
+         fieldset[disabled] .btn-k52blue, 
+         .btn-k52blue.disabled:hover, 
+         .btn-k52blue[disabled]:hover, 
+         fieldset[disabled] .btn-k52blue:hover, 
+         .btn-k52blue.disabled:focus, 
+         .btn-k52blue[disabled]:focus, 
+         fieldset[disabled] .btn-k52blue:focus, 
+         .btn-k52blue.disabled:active, 
+         .btn-k52blue[disabled]:active, 
+         fieldset[disabled] .btn-k52blue:active, 
+         .btn-k52blue.disabled.active, 
+         .btn-k52blue[disabled].active, 
+         fieldset[disabled] .btn-k52blue.active { 
+         background-color: #1C2A48; 
+         border-color: #130269; 
+         } 
+         .btn-k52blue .badge { 
+         color: #1C2A48; 
+         background-color: #ffffff; 
+         }
+         .btn-k52grey { 
+         color: #ffffff; 
+         background-color: #757575; 
+         border-color: #424242; 
+         } 
+         .btn-k52grey:hover, 
+         .btn-k52grey:focus, 
+         .btn-k52grey:active, 
+         .btn-k52grey.active, 
+         .open .dropdown-toggle.btn-k52grey { 
+         color: #ffffff; 
+         background-color: #424242; 
+         border-color: #424242; 
+         } 
+         .btn-k52grey:active, 
+         .btn-k52grey.active, 
+         .open .dropdown-toggle.btn-k52grey { 
+         background-image: none; 
+         } 
+         .btn-k52grey.disabled, 
+         .btn-k52grey[disabled], 
+         fieldset[disabled] .btn-k52grey, 
+         .btn-k52grey.disabled:hover, 
+         .btn-k52grey[disabled]:hover, 
+         fieldset[disabled] .btn-k52grey:hover, 
+         .btn-k52grey.disabled:focus, 
+         .btn-k52grey[disabled]:focus, 
+         fieldset[disabled] .btn-k52grey:focus, 
+         .btn-k52grey.disabled:active, 
+         .btn-k52grey[disabled]:active, 
+         fieldset[disabled] .btn-k52grey:active, 
+         .btn-k52grey.disabled.active, 
+         .btn-k52grey[disabled].active, 
+         fieldset[disabled] .btn-k52grey.active { 
+         background-color: #757575; 
+         border-color: #424242; 
+         } 
+         .btn-k52grey .badge { 
+         color: #757575; 
+         background-color: #ffffff; 
+         }
+         .redtext {
+         color: #C0D9AF;
+         }
+         affixed{
+         position:fixed;
+         top:50px;
+      
+         .disableScroll{
+         overflow-y:hidden;
+         overflow-x:hidden;
+         }
+         #AZlist.dropdown-menu{
+         min-width: 325px;
+         max-width: 325px;
+         }
+         .list-inline {
+         padding-left: 0;
+         margin-left: 5px;
+         list-style: none;
+         }
+         .rightpadding {
+         padding-right: 15px;
+         padding-bottom: 25px;
+         }
+         .rightpadding20 {
+         padding-right: 20px;
+         }
+		 
+      </style>
+      <style>
+         .solstice-bg{color:#000; background-color: #fff3e0;}
+         .solsticefb-bg{color:#000; background-color: #ffe0b2;}
+         .solsticelat-bg{color:#000; background-color: #ffcc80;}
+         .solsticelong-bg{color:#000; background-color: #ffb74d;}
+         .equinox-bg{color:#000; background-color: #fffde7;}
+         .equinoxfb-bg{color:#000; background-color: #fff9c4 ;}
+         .equinoxlat-bg{color:#000; background-color: #fff59d;}
+         .equinoxlong-bg{color:#000; background-color: #fff176 ;}
+         .crossquarter-bg{color:#000; background-color: #f1f8e9;}
+         .crossquarterfb-bg{color:#000; background-color: #dcedc8;}
+         .crossquarterlat-bg{color:#000; background-color: #c5e1a5;}
+         .crossquarterlong-bg{color:#000; background-color: #aed581;}
+         .major-bg{color:#000; background-color: #d0d6e2;}
+         .majorfb-bg{color:#000; background-color: #b1bace;}
+         .majorlat-bg{color:#000; background-color: #929fba;}
+         .majorlong-bg{color:#000; background-color: #7283a7;}
+         .minor-bg{color:#000; background-color: #fbe9e7 ;}
+         .minorfb-bg{color:#000; background-color: #ffccbc;}
+         .minorlat-bg{color:#000; background-color: #ffab91;}
+         .minorlong-bg{color:#000; background-color: #ff8a65;}
+         .majorin-bg{color:#000; background-color: #efebe9;}
+         .majorinfb-bg{color:#000; background-color: #d7ccc8;}
+         .majorinlat-bg{color:#000; background-color: #bcaaa4;}
+         .majorinlong-bg{color:#000; background-color: #a1887f ;}
+         .minorin-bg{color:#000; background-color: #f9fbe7 ;}
+         .minorinfb-bg{color:#000; background-color: #f0f4c3;}
+         .minorinlat-bg{color:#000; background-color: #e6ee9c;}
+         .minorinlong-bg{color:#000; background-color: #dce775;}
+         .north-bg{color:#000; background-color: #f3e5f5;}
+         .south-bg{color:#000; background-color: #e1bee7;}
+         .row.vdivide [class*='col-']:not(:last-child):after {
+         background: #e0e0e0;
+         width: 1px;
+         content: "";
+         display:block;
+         position: absolute;
+         top:0;
+         bottom: 0;
+         right: 0;
+         min-height: 70px;
+         }
+      </style>
+<style>	  
+	  .icon {
+  max-width: 70%;
+  max-height: 70%;
+  margin: 4px;
+}
+</style>	  
+	  
+<style id="compiled-css" type="text/css">
+   html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    height: 60px;
+	color: #fffffe;
+	background-color: #7c6f91ff
+	font-size: 35px;
+    text-align: center;
+    text-decoration : none;
+	
+    background: #d9534f;
+
+
+
+
+
+
+
+
+
+        
+        width: auto;
+		padding: -10px 60px;
+}
+
+main {
+    flex: auto;
+    background-color: #ccc;
+	
+}
+
+
+
+footer {
+    height: 23px;
+    background-color: #483737ff;
+    padding: 2px 0px;
+    font-size: 12px;
+    text-align: center;
+    text-decoration : none;
+    color: #c8c4b7ff;
+	
+}
+
+.leaflet-sidebar-header {
+  margin: -10px -20px 0;
+  height: 40px;
+  padding: 0 20px;
+  line-height: 40px;
+  font-size: 14.4pt;
+  color: #fff;
+  background: #5bc0de;
+
+
+  }
+</style>	  
+	  
+   </head>
+   <body onload="compute(); latlongChanged();">
+      <script>
+         $(document).ready(function() {  
+         
+         	// set up event handlers on input boxes
+         	
+         	$('#latbox').change(function(){ latlongChanged(); });
+         	$('#lngbox').change(function(){ latlongChanged(); });
+         	$('#T').change(function(){ latlongChanged(); });
+         	$('#disknew1').change(function(){ latlongChanged(); });
+         	$('#disknew2').change(function(){ latlongChanged(); });
+         	$('#disknew3').change(function(){ latlongChanged(); });
+         	$('#age').change(function(){ latlongChanged(); });
+         	$('#dist').change(function(){ latlongChanged(); });
+         
+         	
+         	
+         
+         });
+         
+      </script>
+	  <header><h3>MACE &#8226; Map-based Archaeoastronomy Calculator and Explorer</h3></header>
+      <main>
+	  <div id="map"></div>
+      <div id="sidebar" class="leaflet-sidebar collapsed">
+         <!-- Nav tabs -->
+         <div class="leaflet-sidebar-tabs">
+            <ul role="tablist">
+               <li><a href="#home" role="tab" data-toggle="tooltip" data-placement="right" data-container="body" title="Input Parameters"><i class="fa fa-edit"></i></a></li>
+               <li><a href="#context" role="tab" data-toggle="tooltip" data-placement="right" data-container="body" title="View Azimuths"><i class="fa fa-list"></i></a></li>
+               <li><a href="#methodology" role="tab" data-toggle="tooltip" data-placement="right" data-container="body" title="Output Table"><i class="fa fa-table"></i></a></li>
+               <li><a href="#analysis" role="tab" data-toggle="tooltip" data-placement="right" data-container="body" title="Save Output and View Geojson"><i class="fa fa-save"></i></a></li>
+            </ul>
+            <ul role="tablist">
+               <li><a href="#settings" role="tab" data-toggle="tooltip" data-placement="right" data-container="body" title="About MACE"><i class="fa fa-info"></i></a></li>
+            </ul>
+         </div>
+         <!-- Tab panes - Section 1 -->
+         <div class="leaflet-sidebar-content">
+            <div class="leaflet-sidebar-pane" id="home">
+               <h1 class="leaflet-sidebar-header"> Input Parameters <span class="leaflet-sidebar-close"><i class="fa fa-chevron-left"></i></span> </h1>
+               <div>
+                  <div class="poibar-table">
+                     <div class="rightpadding">
+                        <!-- Tab panes - Section Content -->
+                        <div id="lobipanel-multiple19">
+                           <div class="panel panel-default">
+                              <div class="panel-heading">
+                                 <div class="panel-title">
+                                    <h1 class="panel-title"><span class="fa fa-edit text-primary"></span>&nbsp;General Parameters
+                                    </h1>
+                                 </div>
+                              </div>
+                              <div class="panel-body">
+                                 <!-- Panel Content -->
+                                 <div class="col-xs-12">
+                                    <label for="lat">Latitude</label>
+                                    <input id="latbox" name="latbox" class="form-control col-xs-2" size="4" value="53.4869" type="text">
+                                    <span class="help-block">Enter latitude °</span>
+                                 </div>
+                                 <div class="col-xs-12">
+                                    <label for="lon">Longitude</label>
+                                    <input id="lngbox" name="lon" class="form-control col-xs-2" size="4" value="-7.5655" type="text">
+                                    <span class="help-block">Enter longitude °</span>
+                                 </div>
+                                 <div class="col-xs-12">
+                                    <label for="age">Astronomical Date</label>
+                                    <input id="age" name="age" class="form-control col-xs-2" size="5" value="-3400" type="text">
+                                    <span class="help-block">Enter Date</span>
+                                 </div>
+                                 <div class="col-sm-12 ">
+                                    <div class="form-group">
+                                       <label  for="radios">Position at horizon</label>
+                                       <div class="radio">
+                                          <label for="radios-0">
+                                          <input id="disknew1" name="disknew" value="1" checked="checked" type="radio">
+                                          Just fully above horizon </label>
+                                       </div>
+                                       <div class="radio">
+                                          <label for="radios-1">
+                                          <input id="disknew2" name="disknew" value="2" type="radio">
+                                          Centered at horizon</label>
+                                       </div>
+                                       <div class="radio">
+                                          <label for="radios-1">
+                                          <input id="disknew3" name="disknew" value="3" type="radio">
+                                          Just fully below horizon</label>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div id="lobipanel-multiple14">
+                           <div class="panel panel-default">
+                              <div class="panel-heading">
+                                 <div class="panel-title">
+                                    <h1 class="panel-title"><span class="fa fa-edit text-primary"></span>&nbsp;Additional Parameters
+                                    </h1>
+                                 </div>
+                              </div>
+                              <div class="panel-body">
+                                 <!-- Panel Content -->
+                                 <div class="col-xs-12">
+                                    <label for="distance">Distance</label>
+                                    <input id="dist" name="dist" class="dist form-control col-xs-2" size="4" value="999" type="text">
+                                    <span class="help-block">Enter desired projections distance in km</span>
+                                 </div>
+                                 <div class="col-xs-12">
+                                    <label for="Temperature">Temperature</label>
+                                    <input id="T" name="T" class="form-control col-xs-2" size="2" value="15">
+                                    <span class="help-block">Enter temperature in ° celsius using same height reference as Air pressure</span>
+                                 </div>
+                                 <div class="col-xs-12">
+                                    <label for="Air pressure">Air pressure</label>
+                                    <input id="P" name="P" type="text" class="form-control col-xs-2" size="5" value="1013.25">
+                                    <span class="help-block">Enter air pressure in millibars</span>
+                                 </div>
+                                 <div class="col-xs-12">
+                                    <label for="Latitude +/-">Latitude +/</label>
+                                    <input id="errorlat" name="errorlat" class="form-control col-xs-2" size="4" value="0.01">
+                                    <span class="help-block">Latitude error</span>
+                                 </div>
+                                 <div class="col-sm-12 ">
+                                    <div class="form-group">
+                                       <label  for="radios">Air Pressure @</label>
+                                       <div class="radio">
+                                          <label for="radios-0">
+                                          <input id="height1" name="height" value = '1'" checked="checked" type="radio">
+                                          Eye height level </label>
+                                       </div>
+                                       <div class="radio">
+                                          <label for="radios-1">
+                                          <input id="height2" name="height" value = '2'" type="radio">
+                                          Sea height level</label>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <!-- Tab panes - End Section Content -->  
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="leaflet-sidebar-pane" id="analysis">
+               <h1 class="leaflet-sidebar-header"> Geojson <span class="leaflet-sidebar-close"><i class="fa fa-chevron-left"></i></span> </h1>
+               <div>
+                  <div class="poibar-table">
+                     <div class="rightpadding">
+                        <div id="lobipanel-multiple20">
+                           <div class="panel panel-default">
+                              <div class="panel-heading">
+                                 <div class="panel-title">
+                                    <h1 class="panel-title"><span class="fa fa-save text-primary"></span>&nbsp;Geojson Output </h1>
+                                 </div>
+                              </div>
+                              <div class="panel-body">
+                                 <!-- Panel Content -->
+                                 <button type="button" id= "clickhere"  class="btn btn-primary" >Save to File</button>
+								 <button type="button" onclick="copyToClipboard('#geojson')" class="btn btn-primary">Copy Geojson</button>
+								 
+                                 <legend>&nbsp;</legend>
+
+								 <pre id="geojson">{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 0,
+      "properties": {
+        "Division": "Solstice",
+        "Line": "Summer northern sunrise",
+        "stroke": "#ffb74d",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+		    <output id="ddlong"></output>,
+			<output id="ddlat"></output>
+		  ],
+          [
+		    <output id="solstice1long"></output>,
+		    <output id="solstice1lat"></output>
+		  ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 1,
+      "properties": {
+        "Division": "Solstice",
+        "Line": "Summer northern sunset",
+        "stroke": "#ffb74d",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlonga"></output>,
+            <output id="ddlata"></output>
+          ],
+          [
+            <output id="solstice2long"></output>,
+            <output id="solstice2lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 2,
+      "properties": {
+        "Division": "Solstice",
+        "Line": "Winter southern sunrise",
+        "stroke": "#ffb74d",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongb"></output>,
+            <output id="ddlatb"></output>
+          ],
+          [
+            <output id="solstice3long"></output>,
+            <output id="solstice3lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 3,
+      "properties": {
+        "Division": "Solstice",
+        "Line": "Winter southern sunset",
+        "stroke": "#ffb74d",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongc"></output>,
+            <output id="ddlatc"></output>
+          ],
+          [
+            <output id="solstice4long"></output>,
+            <output id="solstice4lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 4,
+      "properties": {
+        "Division": "Equinox",
+        "Line": "Spring eastern sunrise",
+        "stroke": "#fff176",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongd"></output>,
+            <output id="ddlatd"></output>
+          ],
+          [
+            <output id="equinox1long"></output>,
+            <output id="equinox1lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 5,
+      "properties": {
+        "Division": "Equinox",
+        "Line": "Spring western sunset",
+        "stroke": "#fff176",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlonge"></output>,
+            <output id="ddlate"></output>
+          ],
+          [
+            <output id="equinox2long"></output>,
+            <output id="equinox2lat"></output>
+          ]
+        ]
+      }
+    },
+    
+	{
+      "type": "Feature",
+      "id": 8,
+      "properties": {
+        "Division": "Cross quarter",
+        "Line": "Summer northern sunrise",
+        "stroke": "#aed581",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongf"></output>,
+            <output id="ddlatf"></output>
+          ],
+          [
+            <output id="crossquarter1long"></output>,
+            <output id="crossquarter1lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 9,
+      "properties": {
+        "Division": "Cross quarter",
+        "Line": "Summer northern sunset",
+        "stroke": "#aed581",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongg"></output>,
+            <output id="ddlatg"></output>
+          ],
+          [
+            <output id="crossquarter2long"></output>,
+            <output id="crossquarter2lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10,
+      "properties": {
+        "Division": "Cross quarter",
+        "Line": "Winter southern sunrise",
+        "stroke": "#aed581",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongh"></output>,
+            <output id="ddlath"></output>
+          ],
+          [
+            <output id="crossquarter3long"></output>,
+            <output id="crossquarter3lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 11,
+      "properties": {
+        "Division": "Cross quarter",
+        "Line": "Winter southern sunset",
+        "stroke": "#aed581",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongi"></output>,
+            <output id="ddlati"></output>
+          ],
+          [
+            <output id="crossquarter4long"></output>,
+            <output id="crossquarter4lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 12,
+      "properties": {
+        "Division": "Major lunar standstill",
+        "Line": "Northern moonrise",
+        "stroke": "#7283a7",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongj"></output>,
+            <output id="ddlatj"></output>
+          ],
+          [
+            <output id="major1long"></output>,
+            <output id="major1lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 13,
+      "properties": {
+        "Division": "Major lunar standstill",
+        "Line": "Northern moonset",
+        "stroke": "#7283a7",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongk"></output>,
+            <output id="ddlatk"></output>
+          ],
+          [
+            <output id="major2long"></output>,
+            <output id="major2lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 14,
+      "properties": {
+        "Division": "Major lunar standstill",
+        "Line": "Southern moonrise",
+        "stroke": "#7283a7",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongl"></output>,
+            <output id="ddlatl"></output>
+          ],
+          [
+            <output id="major3long"></output>,
+            <output id="major3lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 15,
+      "properties": {
+        "Division": "Major lunar standstill",
+        "Line": "Southern moonset",
+        "stroke": "#7283a7",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongm"></output>,
+            <output id="ddlatm"></output>
+          ],
+          [
+            <output id="major4long"></output>,
+            <output id="major4lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 16,
+      "properties": {
+        "Division": "Minor lunar standstill",
+        "Line": "Northern moonrise",
+        "stroke": "#ff8a65",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongn"></output>,
+            <output id="ddlatn"></output>
+          ],
+          [
+            <output id="minor1long"></output>,
+            <output id="minor1lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 17,
+      "properties": {
+        "Division": "Minor lunar standstill",
+        "Line": "Northern moonset",
+        "stroke": "#ff8a65",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongo"></output>,
+            <output id="ddlato"></output>
+          ],
+          [
+            <output id="minor2long"></output>,
+            <output id="minor2lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 18,
+      "properties": {
+        "Division": "Minor lunar standstill",
+        "Line": "Southern moonrise",
+        "stroke": "#ff8a65",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongp"></output>,
+            <output id="ddlatp"></output>
+          ],
+          [
+            <output id="minor3long" title="minor3long"></output>,
+            <output id="minor3lat" title="minor3lat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 19,
+      "properties": {
+        "Division": "Minor lunar standstill",
+        "Line": "Southern moonset",
+        "stroke": "#ff8a65",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongq"></output>,
+            <output id="ddlatq"></output>
+          ],
+          [
+            <output id="minor4long"></output>,
+            <output id="minor4lat"></output>
+          ]
+        ]
+      }
+    },
+	{
+      "type": "Feature",
+      "id": 28,
+      "properties": {
+        "Division": "North/South",
+        "Line": "North",
+        "stroke": "#f3e5f5",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongr"></output>,
+            <output id="ddlatr"></output>
+          ],
+          [
+            <output id="northlong"></output>,
+            <output id="northlat"></output>
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 29,
+      "properties": {
+        "Division": "North/South",
+        "Line": "South",
+        "stroke": "#e1bee7",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "Inner bearing": "",
+        "geodesic": "true",
+        "geodesic_steps": 50,
+        "geodesic_wrap": "true"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            <output id="ddlongs"></output>,
+            <output id="ddlats"></output>
+          ],
+          [
+            <output id="southlong"></output>,
+            <output id="southlat"></output>
+          ]
+        ]
+      }
+    }
+  ]
+}</pre>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Tab panes - Context -->	
+            <div class="leaflet-sidebar-pane" id="context">
+               <h1 class="leaflet-sidebar-header"> View Azimuths <span class="leaflet-sidebar-close"><i class="fa fa-chevron-left"></i></span> </h1>
+               <div>
+                  <div class="poibar-table">
+                     <div class="rightpadding">
+                        <div id="lobipanel-multiple1">
+                           <div class="panel panel-default">
+                              <div class="panel-heading">
+                                 <div class="panel-title">
+                                    <h1 class="panel-title"><span class="fa fa-list text-primary"></span>&nbsp;Solar - Lunar Azimuths</h1>
+                                 </div>
+                              </div>
+                              <div class="panel-body">
+                                 <legend>Solstices</legend>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="solsticeazisumrise">Summer northern sunrise</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon solstice-bg input-sm">Bearing °</span>
+                                             <input id="solsticeazisumrise" name="solsticeazisumrise" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="solsticeazisumset">Summer northern sunset</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon solsticefb-bg input-sm">Bearing °</span>
+                                             <input id="solsticeazisumset" name="solsticeazisumset" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="solsticeaziwinrise">Winter southern sunrise</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon solsticelat-bg input-sm">Bearing °</span>
+                                             <input id="solsticeaziwinrise" name="solsticeaziwinrise" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="solsticeaziwinset">Winter southern sunset</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon solsticelong-bg input-sm">Bearing °</span>
+                                             <input id="solsticeaziwinset" name="solsticeaziwinset" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xs-12" style="height:20px;"></div>
+                                 <legend>Cross Quarters</legend>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="crossquarterazisumrise">Northern sunrise</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon crossquarter-bg input-sm">Bearing °</span>
+                                             <input id="crossquarterazisumrise" name="crossquarterazisumrise" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="crossquarterazisumrise">Northern sunset</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon crossquarterfb-bg input-sm">Bearing °</span>
+                                             <input id="crossquarterazisumset" name="crossquarterazisumset" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="crossquarteraziwinrise">Southern sunrise</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon crossquarterlat-bg input-sm">Bearing °</span>
+                                             <input id="crossquarteraziwinrise" name="crossquarteraziwinrise" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="crossquarteraziwinrise">Southern sunset</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon crossquarterlat-bg input-sm">Bearing °</span>
+                                             <input id="crossquarteraziwinset" name="crossquarteraziwinset" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xs-12" style="height:20px;"></div>
+                                 <legend>Equinoxs</legend>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="equinoxazisumrise">Eastern sunrise</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon equinox-bg input-sm">Bearing °</span>
+                                             <input id="equinoxazisumrise" name="equinoxazisumrise" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="equinoxazisumset">Western sunset</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon equinoxfb-bg input-sm">Bearing °</span>
+                                             <input id="equinoxazisumset" name="equinoxazisumset" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xs-12" style="height:20px;"></div>
+                                 <legend>Major Standstills</legend>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="majorazisumrise">Northern moonrise</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon major-bg input-sm">Bearing °</span>
+                                             <input id="majorazisumrise" name="majorazisumrise" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="majorazisumset">Northern moonset</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon majorfb-bg input-sm">Bearing °</span>
+                                             <input id="majorazisumset" name="majorazisumset" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="majoraziwinrise">Southern moonrise</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon majorlat-bg input-sm">Bearing °</span>
+                                             <input id="majoraziwinrise" name="majoraziwinrise" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="majoraziwinset">Southern moonset</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon majorlong-bg input-sm">Bearing °</span>
+                                             <input id="majoraziwinset" name="majoraziwinset" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xs-12" style="height:20px;"></div>
+                                 <legend>Minor Standstills</legend>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="minorazisumrise">Northern moonrise</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon minor-bg input-sm">Bearing °</span>
+                                             <input id="minorazisumrise" name="minorazisumrise" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="minorazisumset">Northern moonset</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon minorfb-bg input-sm">Bearing °</span>
+                                             <input id="minorazisumset" name="minorazisumset" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="minoraziwinrise">Southern moonrise</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon minorlat-bg input-sm">Bearing °</span>
+                                             <input id="minoraziwinrise" name="minoraziwinrise" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="minoraziwinset">Southern moonset</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon minorlong-bg input-sm">Bearing °</span>
+                                             <input id="minoraziwinset" name="minoraziwinset" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-xs-12" style="height:20px;"></div>
+                                 <legend>North - South</legend>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="crossquarterazisumrise">North</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon north-bg input-sm">Bearing °</span>
+                                             <input id="north" name="north" class="form-control" type="text" size="4" value="00.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class='col-sm-12'>
+                                    <div class="form-group">
+                                       <label class="col-xs-12 control-label" for="crossquarterazisumrise">South</label>
+                                       <div class="col-xs-12">
+                                          <div class="input-group">
+                                             <span class="input-group-addon south-bg input-sm">Bearing °</span>
+                                             <input id="south" name="south" class="form-control" type="text" size="4" value="180.00">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Tab panes - Methodology -->
+            <div class="leaflet-sidebar-pane" id="methodology">
+               <h1 class="leaflet-sidebar-header"> Output Table <span class="leaflet-sidebar-close"><i class="fa fa-chevron-left"></i></span> </h1>
+               <div>
+                  <div class="poibar-table">
+                     <div class="rightpadding">
+                        <div id="lobipanel-multiple8">
+                           <div class="panel panel-default">
+                              <div class="panel-heading">
+                                 <div class="panel-title">
+                                    <h1 class="panel-title"><span class="fa fa-table text-primary"></span>&nbsp;Azimuths Projections Output
+                                    </h1>
+                                 </div>
+                              </div>
+                              <div class="panel-body">
+                                 <!-- Panel Content -->
+                                 <legend>&nbsp;</legend>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div></div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><b>Original bearing</b></div>
+                                    <div class="col-xs-2 col-half-offset"><b>Final bearing</b></div>
+                                    <div class="col-xs-3 col-half-offset"><b>Destination point</b></div>
+                                    <div></div>
+                                 </div>
+                                 <legend>Solstices</legend>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm solstice-bg">Northern sunrise</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng" title="brng"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng" title="result-brng"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm solsticefb-bg">Northern sunset</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng1" title="brng1"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng1" title="result-brng1"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point1" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm solsticelat-bg">Southern sunrise</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng2" title="brng2"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng2" title="result-brng2"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point2" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm solsticelong-bg">Southern sunset</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng3" title="brng3"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng3" title="result-brng2"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point3" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <legend>Equinoxs</legend>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm equinox-bg">Eastern sunrise</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng4" title="brng4"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng4" title="result-brng4"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point4" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm equinoxfb-bg">Western sunset</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng5" title="brng5"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng5" title="result-brng5"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point5" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <legend>Cross quarters</legend>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm crossquarter-bg">Northern sunrise</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng8" title="brng8"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng8" title="result-brng8"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point8" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm crossquarterfb-bg">Northern sunset</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng9" title="brng9"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng9" title="result-brng9"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point9" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm crossquarterlat-bg">Southern sunrise</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng10" title="brng10"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng10" title="result-brng10"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point10" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm crossquarterlong-bg">Southern sunset</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng11" title="brng11"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng11" title="result-brng11"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point11" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <legend>Major standstills</legend>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm major-bg">Northern moonrise</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng12" title="brng12"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng12" title="result-brng12"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point12" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm majorfb-bg">Northern moonset</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng13" title="brng13"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng13" title="result-brng13"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point13" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm majorlat-bg">Southern moonrise</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng14" title="brng14"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng14" title="result-brng14"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point14" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm majorlong-bg">Southern moonset</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng15" title="brng15"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng15" title="result-brng8"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point15" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <legend>Minor standstills</legend>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm minor-bg">Northern moonrise</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng16" title="brng16"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng16" title="result-brng16"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point16" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm minorfb-bg">Northern moonset</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng17" title="brng17"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng17" title="result-brng17"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point17" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm minorlat-bg">Southern moonrise</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng18" title="brng18"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng18" title="result-brng18"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point18" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm minorlong-bg">Southern moonset</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng19" title="brng19"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng19" title="result-brng19"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point19" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <legend>North/South</legend>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm north-bg">North</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng20" title="brng20"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng20" title="result-brng20"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point20" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-xs-3">
+                                       <div class="well well-sm south-bg">South</div>
+                                    </div>
+                                    <div class="col-xs-2 col-half-offset"></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="brng21" title="brng21"></output></div>
+                                    <div class="col-xs-2 col-half-offset"><output id="result-brng21" title="result-brng21"></output></div>
+                                    <div class="col-xs-3 col-half-offset"><output id="result-point21" title="Destination point"></output></div>
+                                    <div></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Tab panes - Settings -->
+            <div class="leaflet-sidebar-pane" id="settings">
+               <h1 class="leaflet-sidebar-header">About Mace<span class="leaflet-sidebar-close"><i class="fa fa-chevron-left"></i></span></h1>
+               <div>
+                  <div class="poibar-table">
+                     <div class="rightpadding">
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      
+      </div>
+	  </main>
+	  
+<footer>MACE &#8226; Map-based Archaeoastronomy Calculator and Explorer &#8226; Vast Plain Horizon Edition &#8226; Brian Doyle 2019 &#8226; briandoyle.kerbstone52.@gmail.com</footer>	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+      <form name="convert1" id="convert1">
+         <input type="hidden" checked = "true" name="deg-format" id="deg-format-d" value="d" >
+         <input type="hidden" name="deg-format" id="deg-format-dm" value="dm">
+         <input type="hidden" name="deg-format" id="deg-format-dms" value="dms">
+      </form>
+      <script src="assets/js/jquery-2.1.4.min.js"></script> 
+      <script src="assets/js/jquery-ui.min.js"></script> 
+      <script src="assets/js/jquery.ui.touch-punch.min.js"></script> 
+      <script src="assets/js/bootstrap.min.js"></script> 
+      <script src="assets/js/lobipanel.js"></script> 
+      <script src="assets/js/leaflet.groupedlayercontrol.js"></script> 
+      <script src="assets/js/tangram.min.js"></script> 
+      <script src="assets/js/leaflet-touch-helper.js"></script> 
+      <script src="assets/js/Control.Coordinates.js"></script> 
+      <script src="assets/js/Leaflet.PolylineMeasure.js"></script> 
+      <script src="assets/js/L.Control.HtmlLegend.js"></script> 
+      <script src="assets/js/Leaflet.fullscreen.js"></script> 
+      <script src="assets/js/leaflet-bing-layer.js"></script>
+      <script src="assets/js/omphalopsychicsingle.js"></script>
+      <script src="assets/js/layercontrol.js"></script> 
+      <script src="assets/js/leaflet-sidebar.js"></script> 
+      <script src="assets/js/js.cookie.min.js"></script>
+      <script src="assets/js/latlon-spherical.js"></script>
+      <script src="assets/js/dms.js"></script>
+      <script src="assets/js/map.js"></script>
+      <script src="assets/js/leaflet.browser.print.js"></script> 
+      <script src="assets/js/leaflet.browser.print.utils.js"></script> 
+      <script src="assets/js/printsettings.js"></script>
+	  <script src="assets/js/Leaflet.Geodesic.orig.js"></script>
+	  <script src="https://unpkg.com/togeojson@0.16.0"></script>
+      <script src="assets/js/leaflet.filelayer.js"></script>	
+      <script src="assets/js/style.js"></script>
+	  <script src='https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js'></script>
+      	  
+      
+	  
+	  
+	  
+	  
+	  <script>
+         function setModalMaxHeight(element) {
+         this.$element     = $(element);  
+         this.$content     = this.$element.find('.modal-content');
+         var borderWidth   = this.$content.outerHeight() - this.$content.innerHeight();
+         var dialogMargin  = $(window).width() < 768 ? 20 : 60;
+         var contentHeight = $(window).height() - (dialogMargin + borderWidth);
+         var headerHeight  = this.$element.find('.modal-header').outerHeight() || 0;
+         var footerHeight  = this.$element.find('.modal-footer').outerHeight() || 0;
+         var maxHeight     = contentHeight - (headerHeight + footerHeight);
+         this.$content.css({
+            'overflow': 'hidden'
+         });
+         this.$element
+          .find('.modal-body').css({
+            'max-height': maxHeight,
+            'overflow-y': 'auto'
+         });
+         }
+         $('.modal').on('show.bs.modal', function() {
+         $(this).show();
+         setModalMaxHeight(this);
+         });
+         $(window).resize(function() {
+         if ($('.modal.in').length != 0) {
+          setModalMaxHeight($('.modal.in'));
+         }
+         });
+      </script> 
+      <script>   
+         $("#featureModal").draggable({
+              handle: ".modal-header"
+          });  
+      </script> 
+      <script>    
+         var sidebar = L.control.sidebar({ container: 'sidebar', autopan: true })
+                     .addTo(map);   
+      </script> 
+      <script>
+         $(function(){
+             $('#lobipanel-multiple').find('.panel').lobiPanel({
+                 state: 'collapsed',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script> 
+      <script>
+         $(function(){
+             $('#lobipanel-multiple1').find('.panel').lobiPanel({
+                 state: 'open',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script> 	
+      <script>
+         $(function(){
+             $('#lobipanel-multiple3').find('.panel').lobiPanel({
+                 state: 'collapsed',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script>
+         $(function(){
+            $('#lobipanel-multiple4').find('.panel').lobiPanel({
+                 state: 'collapsed',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script>
+         $(function(){
+           $('#lobipanel-multiple6').find('.panel').lobiPanel({
+                 state: 'collapsed',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script>
+         $(function(){
+           $('#lobipanel-multiple7').find('.panel').lobiPanel({
+                 state: 'collapsed',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script>
+         $(function(){
+              $('#lobipanel-multiple8').find('.panel').lobiPanel({
+                 state: 'open',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script>
+         $(function(){
+           $('#lobipanel-multiple9').find('.panel').lobiPanel({
+                 state: 'collapsed',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script>
+         $(function(){
+          $('#lobipanel-multiple11').find('.panel').lobiPanel({
+                 state: 'collapsed',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script>
+         $(function(){
+          $('#lobipanel-multiple14').find('.panel').lobiPanel({
+                 state: 'collapsed',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script>
+         $(function(){
+          $('#lobipanel-multiple19').find('.panel').lobiPanel({
+                 state: 'open',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script>
+         $(function(){
+          $('#lobipanel-multiple20').find('.panel').lobiPanel({
+                 state: 'open',
+         sortable: true,
+         reload: false,
+         close: false,
+         editTitle: false
+             });
+         });
+      </script>
+      <script> 
+         $(document).ready(function(){
+             $('[rel=tooltip]').tooltip({ trigger: "hover" });
+         });
+      
+      </script>
+	  <script >function copyToClipboard(element) {
+var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($(element).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
+
+      </script>
+      <script>
+$('#clickhere').click(function() {
+   downloadeverything();
+});
+
+function downloadeverything() {
+   function downloadInnerHtml(filename, elId, mimeType) {
+      var elHtml = $('#' + elId).text();
+      var link = document.createElement('a');
+      mimeType = mimeType || 'text/plain';
+      link.setAttribute('download', filename);
+      link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
+      link.click();
+   }
+   var fileName = 'omphalopsychic.geojson';
+   downloadInnerHtml(fileName, 'geojson', 'text/html');
+}
+      </script>
+</body>
+</html>
